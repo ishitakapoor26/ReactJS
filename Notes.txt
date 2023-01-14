@@ -1,0 +1,110 @@
+## Folder Structure
+
+package.json: file contains dependencies and scripts required to run the react project.
+
+node_module: includes all the installed dependencies, generated when you run create-ract-app or npm install
+
+public:
+
+manifest.json is for progressive web apps
+index.html: this is the only html file which gets served either single or multiple pages application
+Since we want react to control the UI, we will not change or add any html code here (exceptions exist).
+The div tag with id=root is responsible for controlling or generating entire UI.
+
+src:
+
+index.js : specifies the root component of the app which is App and also specifies the DOM element which is to be controlled by React.
+App.js : this file is responsible for the html displayed in the  browser and includes the App component.
+App.css : for styling the app component
+App.test.js : for unit test
+index.css : applies style to the body tag
+serviceWorker.js : for progressive web apps
+
+When we run the command npm start, index.html file is served.
+index.html contains the root DOM node. Next, the control enters index.js. React component renders the App component onto the root DOM node.
+The App component contains the HTML which is ultimately displayed in the browser.
+
+---------------------------------------------------------
+
+## React components:
+
+Always used in javascript files.
+
+Two types:
+
+1. Stateless Functional component:
+
+-> Used to display html using javascript functions. for example,
+
+-> Use Func components as much as possible
+
+-> Absence of this keyword
+
+-> Maintain their own private data - State using Hooks
+
+-> Mainly responsible for UI
+
+function Welcome(props) {
+    return <h1> Hello, {props.name} </h1>
+}
+
+-> These javascript function accept objects of properties known as props (optional) and returns html (JSX).
+
+
+2. Stateful Class component
+
+-> Used to display html using render method. for example:
+
+-> More feature rich.
+
+-> Maintain their own private data - State
+
+-> Complex UI logic
+
+-> Provide lifecycle hooks
+
+class Welcome extends React.Component {
+    render() {
+        return <h1> Hello, {this.props.name}</h1>
+    }
+}
+
+-----------------------------------------
+
+If there is no content between the tags, you can convert it to simply self closing tag.
+
+Default exports:
+
+In case of default exports, only that particular function is exported as default html function and when it is imported in any other javascript file,
+it can be imported using any name and that name is used to render the html component. 
+
+Named Exports:
+
+In case of named exports, default keyword is not used. Since the exported function is not default, we cannot use any other name while importing that function in any javascript file, otherwise, it will generate error.
+
+---------------------------------------------
+
+## JSX (javascript XML - extension to the javascript language syntax)
+
+-> Write XML-like code for elements and components
+-> JSX tags have a tag name, attributes, and children.
+-> JSX is not a necessity to write react applications.
+-> JSX makes your rect code simpler and elegant.
+-> JSX ultimately transpiles to pure Javascript to pure Javascript which is understood by the browsers.
+-----------
+Props:
+
+-> Props are immutable.
+-> props get passed to the component
+-> Functional parameters
+-> props- functional component
+    this.props- class components
+
+State:
+
+-> state is managed within the component
+-> variables declared in the function body
+-> state can be changed
+-> useStateHook - functional component
+    this.state-  class component
+
