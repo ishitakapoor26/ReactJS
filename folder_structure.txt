@@ -1,0 +1,23 @@
+package.json: file contains dependencies and scripts required to run the react project.
+
+node_module: includes all the installed dependencies, generated when you run create-ract-app or npm install
+
+public:
+
+manifest.json is for progressive web apps
+index.html: this is the only html file which gets served either single or multiple pages application
+Since we want react to control the UI, we will not change or add any html code here (exceptions exist).
+The div tag with id=root is responsible for controlling or generating entire UI.
+
+src:
+
+index.js : specifies the root component of the app which is App and also specifies the DOM element which is to be controlled by React.
+App.js : this file is responsible for the html displayed in the  browser and includes the App component.
+App.css : for styling the app component
+App.test.js : for unit test
+index.css : applies style to the body tag
+serviceWorker.js : for progressive web apps
+
+When we run the command npm start, index.html file is served.
+index.html contains the root DOM node. Next, the control enters index.js. React component renders the App component onto the root DOM node.
+The App component contains the HTML which is ultimately displayed in the browser.
