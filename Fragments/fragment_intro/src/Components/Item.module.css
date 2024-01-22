@@ -7,3 +7,7 @@
   background-color: aliceblue;
   list-style: none;
 }
+
+.button{
+  float: right;
+}

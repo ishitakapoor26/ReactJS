@@ -1,6 +1,7 @@
 import FoodItems from "./Components/FoodItems";
 import ErrorMessage from "./Components/ErrorMessage";
 import Container from "./Components/Container";
+import FoodInput from "./Components/FoodInput";
 
 function App() {
   let mpp = ["Dal", "Roti", "Rice"];
@@ -14,6 +15,7 @@ function App() {
       <Container>
         <h1 className="food-heading">Healthy Food</h1>
         <ErrorMessage items={mpp}></ErrorMessage>
+        <FoodInput></FoodInput>
         <FoodItems items={mpp}></FoodItems>
         {/* <li className="list-group-item">An item</li>
       <li className="list-group-item">A second item</li>
@@ -21,12 +23,12 @@ function App() {
       <li className="list-group-item">A fourth item</li>
       <li className="list-group-item">And a fifth one</li> */}
       </Container>
-      <Container>
+      {/* <Container>
         <p>
           Above is the list of healthy foods that are good for your health and
           well being.
         </p>
-      </Container>
+      </Container> */}
     </>
   );
 }
