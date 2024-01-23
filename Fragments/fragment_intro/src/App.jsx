@@ -2,33 +2,38 @@ import FoodItems from "./Components/FoodItems";
 import ErrorMessage from "./Components/ErrorMessage";
 import Container from "./Components/Container";
 import FoodInput from "./Components/FoodInput";
+import { useState } from "react";
 
 function App() {
-  let mpp = ["Dal", "Roti", "Rice"];
+  // let mpp = ["Dal", "Roti", "Rice"];
   // Conditional Rendering
   // if (mpp.length === 0) {
   //   return <h3>I am still hungry!</h3>;
   // }
 
+  let [textToShow, setTextState] = useState();
+  let [foodItems, setFoodItems] = useState([]);
+
+  // let textToShow = textStateArr[0];
+  // let setTextState = textStateArr[1];
+  // console.log(`Currrent value of textState:${textToShow}`);
+
+  const handleOnChange = (event) => {
+    if (event.key === "Enter") {
+      let newFoodItem = event.target.value;
+      let newItems = [...foodItems, newFoodItem];
+      setFoodItems(newItems);
+    }
+  };
+
   return (
     <>
       <Container>
         <h1 className="food-heading">Healthy Food</h1>
-        <ErrorMessage items={mpp}></ErrorMessage>
-        <FoodInput></FoodInput>
-        <FoodItems items={mpp}></FoodItems>
-        {/* <li className="list-group-item">An item</li>
-      <li className="list-group-item">A second item</li>
-      <li className="list-group-item">A third item</li>
-      <li className="list-group-item">A fourth item</li>
-      <li className="list-group-item">And a fifth one</li> */}
+        <FoodInput handleOnChange={handleOnChange}></FoodInput>
+        <ErrorMessage items={foodItems}></ErrorMessage>
+        <FoodItems items={foodItems}></FoodItems>
       </Container>
-      {/* <Container>
-        <p>
-          Above is the list of healthy foods that are good for your health and
-          well being.
-        </p>
-      </Container> */}
     </>
   );
 }

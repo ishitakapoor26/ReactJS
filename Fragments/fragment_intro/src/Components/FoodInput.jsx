@@ -1,13 +1,12 @@
 import styles from "./FoodInput.module.css";
 
-function FoodInput() {
+// eslint-disable-next-line react/prop-types
+function FoodInput({ handleOnChange }) {
   return (
     <input
       type="text"
       className={styles.foodInput}
-      onChange={(event) => {
-        console.log(event.target.value);
-      }}
+      onKeyDown={handleOnChange}
       // Synthetic event object in react, i.e. event
     ></input>
   );
