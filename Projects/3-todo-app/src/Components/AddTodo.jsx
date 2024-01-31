@@ -13,7 +13,8 @@ function AddTodo({ addToDoHandler }) {
     setDate(event.target.value);
   };
 
-  let handleAddButton = () => {
+  let handleAddButton = (event) => {
+    event.preventDefault();
     addToDoHandler(todoName, todoDate);
     setDate("");
     setName("");
@@ -21,7 +22,7 @@ function AddTodo({ addToDoHandler }) {
 
   return (
     <div className="container text-center">
-      <div className="row kg-row">
+      <form className="row kg-row" onSubmit={handleAddButton}>
         <div className="col-4">
           <input
             type="text"
@@ -42,15 +43,11 @@ function AddTodo({ addToDoHandler }) {
           />
         </div>
         <div className="col-1">
-          <button
-            type="button"
-            className="btn btn-success kg-button"
-            onClick={handleAddButton}
-          >
+          <button type="submit" className="btn btn-success kg-button">
             Add
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
