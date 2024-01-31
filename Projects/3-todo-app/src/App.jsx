@@ -7,9 +7,16 @@ import { useState } from "react";
 function App() {
   const [todoItems, setToDoItems] = useState([]);
 
+  // const addToDoHandler = (todoName, todoDate) => {
+  //   const newItems = [...todoItems, { name: todoName, dueDate: todoDate }];
+  //   setToDoItems(newItems);
+  // };
+
   const addToDoHandler = (todoName, todoDate) => {
-    const newItems = [...todoItems, { name: todoName, dueDate: todoDate }];
-    setToDoItems(newItems);
+    setToDoItems((currValue) => [
+      ...currValue,
+      { name: todoName, dueDate: todoDate },
+    ]);
   };
 
   const onDeleteHandler = (toDoName) => {
