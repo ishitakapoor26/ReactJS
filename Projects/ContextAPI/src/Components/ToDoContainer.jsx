@@ -1,12 +1,11 @@
 import TodoItem from "./TodoItem";
 import css from "./ToDoContainer.module.css";
-import { ToDoItemsContext } from "store/todo-items-store";
+import ToDoItemsContext from "../store/todo-items-store";
 import { useContext } from "react";
 
 // eslint-disable-next-line react/prop-types
-const ToDoContainer = ({ onDeleteHandler }) => {
-  const contextObj = useContext(ToDoItemsContext);
-  const todoItems = contextObj.todoItems;
+const ToDoContainer = () => {
+  const { todoItems } = useContext(ToDoItemsContext);
 
   return (
     <>
@@ -17,7 +16,6 @@ const ToDoContainer = ({ onDeleteHandler }) => {
             key={item.dueDate}
             todoDate={item.dueDate}
             todoName={item.name}
-            onDeleteHandler={onDeleteHandler}
           ></TodoItem>
         ))}
       </div>

@@ -1,5 +1,10 @@
+import { useContext } from "react";
+import TodoItemsContext from "../store/todo-items-store";
+
 // eslint-disable-next-line react/prop-types
-function TodoItem({ todoName, todoDate, onDeleteHandler }) {
+const TodoItem = ({ todoName, todoDate }) => {
+  const { onDeleteHandler } = useContext(TodoItemsContext);
+
   return (
     <div className="container">
       <div className="row kg-row">
@@ -17,6 +22,6 @@ function TodoItem({ todoName, todoDate, onDeleteHandler }) {
       </div>
     </div>
   );
-}
+};
 
 export default TodoItem;
