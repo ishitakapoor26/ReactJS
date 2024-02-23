@@ -4,6 +4,7 @@ import { AiFillDelete } from "react-icons/ai";
 import { PostList } from "../store/post-list-store";
 
 const Post = ({ post }) => {
+  console.log(post);
   const { deletePost } = useContext(PostList);
 
   return (
@@ -19,7 +20,7 @@ const Post = ({ post }) => {
           </span>
         </h5>
         <p className="card-text">{post.body}</p>
-        {post.tags.map((tag) => (
+        {post.tags?.map((tag) => (
           <span key={tag} className="badge text-bg-primary hashtag">
             {tag}
           </span>
