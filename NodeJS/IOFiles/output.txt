@@ -1,0 +1,6 @@
+Hey, there! This is a sample reading file to test the fs module in NodeJS.
+
+Have a nice day ahead :)
+
+Regards,
+Ishita
