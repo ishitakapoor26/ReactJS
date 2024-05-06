@@ -1,68 +1,90 @@
-const express = require("express");
-const fs = require("fs");
 const Tour = require("./../models/tourModel");
 
-const getAllTours = (req, res) => {
-  const tours = JSON.parse(
-    fs.readFileSync(`./dev-data/data/tours-simple.json`, "utf-8")
-  );
+const getAllTours = async (req, res) => {
+  try {
+    const tours = await Tour.find();
 
-  res.status(200).json({
-    status: "success",
-    data: {
-      tours,
-    },
-  });
-  console.log(tours[tours.length - 1].id + 1);
-};
-
-const addTour = (req, res) => {
-  const tours = JSON.parse(
-    fs.readFileSync(`./dev-data/data/tours-simple.json`, "utf-8")
-  );
-
-  let newId;
-  if (tours.length === 0) {
-    newId = 1; // If tours array is empty, start from 1
-  } else {
-    newId = tours[tours.length - 1].id + 1; // Increment the last ID
+    res.status(200).json({
+      status: "success",
+      results: tours.length,
+      data: {
+        tours,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
   }
-
-  const newTour = { id: newId, ...req.body };
-  tours.push(newTour);
-
-  fs.writeFile(
-    `./dev-data/data/tours-simple.json`,
-    JSON.stringify(tours),
-    (err) => {
-      if (err) {
-        // Handle error
-        console.error(err);
-        res.status(500).json({
-          status: "error",
-          message: "Failed to write tour data.",
-        });
-      } else {
-        res.status(201).json({
-          status: "success",
-          data: {
-            tours: newTour,
-          },
-        });
-      }
-    }
-  );
 };
 
-const updateTour = (req, res) => {
-  const tours = JSON.parse(
-    fs.readFileSync(`./dev-data/data/tours-simple.json`, "utf-8")
-  );
+const addTour = async (req, res) => {
+  try {
+    const newTour = await Tour.create(req.body);
+    res.status(201).json({
+      status: "success",
+      data: {
+        tour: newTour,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
 
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: "error",
-      message: "Invalid ID",
+const getTour = async (req, res) => {
+  try {
+    const tour = await Tour.findById(req.params.id);
+    // Tour.findOne({_id: req.params.id})
+    res.status(201).json({
+      status: "success",
+      data: {
+        tour,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
+
+const updateTour = async (req, res) => {
+  try {
+    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(201).json({
+      status: "success",
+      data: {
+        tour,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
+
+const deleteTour = async (req, res) => {
+  try {
+    await Tour.findByIdAndDelete(req.params.id);
+    res.status(204).json({
+      status: "success",
+      data: null,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
     });
   }
 };
@@ -70,5 +92,7 @@ const updateTour = (req, res) => {
 module.exports = {
   getAllTours,
   addTour,
+  getTour,
   updateTour,
+  deleteTour,
 };

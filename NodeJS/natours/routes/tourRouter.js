@@ -10,6 +10,10 @@ router.param("id", (req, res, next, val) => {
 
 router.route("/").get(tourController.getAllTours).post(tourController.addTour);
 
-router.route("/:id").patch(tourController.updateTour);
+router
+  .route("/:id")
+  .patch(tourController.updateTour)
+  .get(tourController.getTour)
+  .delete(tourController.deleteTour);
 
 module.exports = router;
