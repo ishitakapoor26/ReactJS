@@ -2,6 +2,12 @@ const dotenv = require("dotenv");
 const app = require("./app");
 const mongoose = require("mongoose");
 
+process.on("uncaughtException", (err) => {
+  console.log("Shutting down....");
+  console.log(err);
+  process.exit(1);
+});
+
 dotenv.config({ path: "./config.env" });
 
 const db = process.env.DATABASE.replace("<password>", process.env.PASSWORD);
@@ -21,7 +27,7 @@ app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
 
-// Handle central promise rejection
+// Handle central promise rejection--> database connectivity failure
 process.on("unhandledRejection", (err) => {
   console.log(err.name, err.message);
   console.log("Shutting down....");
@@ -29,3 +35,5 @@ process.on("unhandledRejection", (err) => {
     process.exit(1);
   });
 });
+
+// console.log(x);
