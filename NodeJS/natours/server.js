@@ -20,3 +20,12 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
+
+// Handle central promise rejection
+process.on("unhandledRejection", (err) => {
+  console.log(err.name, err.message);
+  console.log("Shutting down....");
+  server.close(() => {
+    process.exit(1);
+  });
+});
