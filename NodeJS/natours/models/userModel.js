@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema({
   photo: String,
   password: {
     type: String,
-    validate: [validator.isStrongPassword, "PLease provide a strong password."],
     required: [true, "Password cannot be empty."],
     minlength: 8,
   },

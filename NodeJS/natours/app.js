@@ -5,6 +5,7 @@ const globalErrorHandler = require("./controllers/errorController");
 const AppError = require("./utils/appError");
 const app = express();
 const tourRouter = require("./routes/tourRouter");
+const userRouter = require("./routes/userRouter");
 
 // Middleware to log HTTP requests (dev format)
 app.use(morgan("dev"));
@@ -14,6 +15,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/v1/tours", tourRouter);
+app.use("/api/v1/users", userRouter);
 
 app.all("*", (req, res, next) => {
   // res.status(404).json({
