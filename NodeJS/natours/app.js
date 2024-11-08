@@ -10,6 +10,7 @@ const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
+const hpp = require("hpp");
 
 // Global Middleware to log HTTP requests (dev format)
 
@@ -37,6 +38,20 @@ const limiter = rateLimit({
 });
 
 app.use("/api", limiter);
+
+// Prevent Parameter pollution
+app.use(
+  hpp({
+    // allows duplicate properties
+    whitelist: [
+      "duration",
+      "ratingsQuantity",
+      "ratingsAverage",
+      "difficulty",
+      "price",
+    ],
+  })
+);
 
 // Routes
 app.use("/api/v1/tours", tourRouter);
