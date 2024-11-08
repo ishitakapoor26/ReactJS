@@ -6,12 +6,21 @@ const AppError = require("./utils/appError");
 const app = express();
 const tourRouter = require("./routes/tourRouter");
 const userRouter = require("./routes/userRouter");
+const rateLimit = require("express-rate-limit");
 
-// Middleware to log HTTP requests (dev format)
+// Global Middleware to log HTTP requests (dev format)
 app.use(morgan("dev"));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many requests from this IP, please try again in an hour!",
+});
+
+app.use("/api", limiter);
 
 // Routes
 app.use("/api/v1/tours", tourRouter);
