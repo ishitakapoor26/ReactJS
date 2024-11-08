@@ -7,13 +7,20 @@ const app = express();
 const tourRouter = require("./routes/tourRouter");
 const userRouter = require("./routes/userRouter");
 const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
 
 // Global Middleware to log HTTP requests (dev format)
+
+// Set security HTTP
+app.use(helmet());
+
+// Development logging
 app.use(morgan("dev"));
 
 // Middleware to parse JSON bodies
-app.use(express.json());
+app.use(express.json({ limit: "10kb" }));
 
+// Set request limits
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
