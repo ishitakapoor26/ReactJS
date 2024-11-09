@@ -6,6 +6,7 @@ const AppError = require("./utils/appError");
 const app = express();
 const tourRouter = require("./routes/tourRouter");
 const userRouter = require("./routes/userRouter");
+const reviewRouter = require("./routes/reviewRouter");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
@@ -56,6 +57,7 @@ app.use(
 // Routes
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/reviews", reviewRouter);
 
 app.all("*", (req, res, next) => {
   // res.status(404).json({
