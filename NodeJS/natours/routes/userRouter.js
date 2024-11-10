@@ -20,7 +20,10 @@ router
   .route("/deleteUser")
   .delete(authController.protect, userController.deleteUser);
 
-router.route("/:id").delete(authController.protect, userController.deleteUser);
+router
+  .route("/:id")
+  .delete(authController.protect, userController.deleteUser)
+  .patch(userController.updateUser);
 
 router.route("/").get(userController.getAllUsers);
 

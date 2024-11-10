@@ -51,3 +51,6 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteUser = factory.deleteOne(User);
+
+// Do not update passwords with this
+exports.updateUser = factory.updateOne(User);

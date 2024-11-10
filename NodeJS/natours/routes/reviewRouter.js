@@ -6,10 +6,16 @@ const authController = require("./../controllers/authController");
 router
   .route("/")
   .get(authController.protect, reviewController.getAllReviews)
-  .post(authController.protect, reviewController.addReviews);
+  .post(
+    authController.protect,
+    authController.restrictTo("user"),
+    reviewController.setTourUserIds,
+    reviewController.addReviews
+  );
 
 router
   .route("/:id")
-  .delete(authController.protect, reviewController.deleteReviews);
+  .delete(authController.protect, reviewController.deleteReviews)
+  .patch(authController.protect, reviewController.updateReviews);
 
 module.exports = router;
