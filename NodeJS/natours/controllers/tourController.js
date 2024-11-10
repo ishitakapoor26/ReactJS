@@ -2,6 +2,7 @@ const Tour = require("./../models/tourModel");
 const APIFeatures = require("../utils/apiFeatures");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const factory = require("./handlerFactory");
 
 const aliasTopTours = (req, res, next) => {
   req.query.limit = "5";
@@ -9,7 +10,7 @@ const aliasTopTours = (req, res, next) => {
   next();
 };
 
-const getAllTours = catchAsync(async (req, res, next) => {
+exports.getAllTours = catchAsync(async (req, res, next) => {
   // BUILD QUERY
 
   // 1) Filtering
@@ -84,7 +85,7 @@ const getAllTours = catchAsync(async (req, res, next) => {
   //   .equals("easy");
 });
 
-const addTour = catchAsync(async (req, res, next) => {
+exports.addTour = catchAsync(async (req, res, next) => {
   const newTour = await Tour.create(req.body);
 
   res.status(201).json({
@@ -102,7 +103,7 @@ const addTour = catchAsync(async (req, res, next) => {
   // }
 });
 
-const getTour = catchAsync(async (req, res, next) => {
+exports.getTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id).populate("reviews");
   // Tour.findOne({_id: req.params.id})
 
@@ -118,7 +119,7 @@ const getTour = catchAsync(async (req, res, next) => {
   });
 });
 
-const updateTour = catchAsync(async (req, res, next) => {
+exports.updateTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -136,22 +137,24 @@ const updateTour = catchAsync(async (req, res, next) => {
   });
 });
 
-const deleteTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndDelete(req.params.id);
+// const deleteTour = catchAsync(async (req, res, next) => {
+//   const tour = await Tour.findByIdAndDelete(req.params.id);
 
-  if (!tour) {
-    return next(new AppError(`No tour found with that ID`, 404));
-  }
+//   if (!tour) {
+//     return next(new AppError(`No tour found with that ID`, 404));
+//   }
 
-  res.status(204).json({
-    status: "success",
-    data: null,
-  });
-});
+//   res.status(204).json({
+//     status: "success",
+//     data: null,
+//   });
+// });
+
+exports.deleteTour = factory.deleteOne(Tour);
 
 // Aggregation Pipeline Implementation: generally used for calculating stats or complex calculations in api
 
-const getTourStats = catchAsync(async (req, res) => {
+exports.getTourStats = catchAsync(async (req, res) => {
   const stats = await Tour.aggregate([
     {
       $match: { ratingsAverage: { $gte: 4.5 } },
@@ -187,7 +190,7 @@ const getTourStats = catchAsync(async (req, res) => {
   });
 });
 
-const getMonthlyPlan = catchAsync(async (req, res) => {
+exports.getMonthlyPlan = catchAsync(async (req, res) => {
   const year = req.params.year * 1;
   const plan = await Tour.aggregate([
     {
@@ -230,14 +233,3 @@ const getMonthlyPlan = catchAsync(async (req, res) => {
     },
   });
 });
-
-module.exports = {
-  getAllTours,
-  addTour,
-  getTour,
-  updateTour,
-  deleteTour,
-  aliasTopTours,
-  getTourStats,
-  getMonthlyPlan,
-};
