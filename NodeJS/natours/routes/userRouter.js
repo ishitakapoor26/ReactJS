@@ -23,7 +23,8 @@ router
 router
   .route("/:id")
   .delete(authController.protect, userController.deleteUser)
-  .patch(userController.updateUser);
+  .patch(authController.protect, userController.updateUser)
+  .get(authController.protect, userController.getUser);
 
 router.route("/").get(userController.getAllUsers);
 

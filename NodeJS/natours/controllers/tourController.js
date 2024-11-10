@@ -10,99 +10,86 @@ const aliasTopTours = (req, res, next) => {
   next();
 };
 
-exports.getAllTours = catchAsync(async (req, res, next) => {
-  // BUILD QUERY
+// exports.getAllTours = catchAsync(async (req, res, next) => {
+//   // BUILD QUERY
 
-  // 1) Filtering
-  // const queryObj = { ...req.query };
-  // const excludedFields = ["page", "sort", "limit", "fields"];
-  // excludedFields.forEach((el) => delete queryObj[el]);
-  // console.log(req.query, queryObj);
+//   // 1) Filtering
+//   // const queryObj = { ...req.query };
+//   // const excludedFields = ["page", "sort", "limit", "fields"];
+//   // excludedFields.forEach((el) => delete queryObj[el]);
+//   // console.log(req.query, queryObj);
 
-  // // 2) Advanced Filtering
-  // let queryStr = JSON.stringify(queryObj);
-  // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-  // console.log(JSON.parse(queryStr));
+//   // // 2) Advanced Filtering
+//   // let queryStr = JSON.stringify(queryObj);
+//   // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+//   // console.log(JSON.parse(queryStr));
 
-  // let query = Tour.find(JSON.parse(queryStr));
+//   // let query = Tour.find(JSON.parse(queryStr));
 
-  // 3) Sorting
+//   // 3) Sorting
 
-  // if (req.query.sort) {
-  //   const sortBy = req.query.sort.split(",").join(" ");
-  //   query = query.sort(sortBy);
-  //   // sort('price ratingsAverage')
-  // } else {
-  //   query = query.sort("-createdAt");
-  // }
+//   // if (req.query.sort) {
+//   //   const sortBy = req.query.sort.split(",").join(" ");
+//   //   query = query.sort(sortBy);
+//   //   // sort('price ratingsAverage')
+//   // } else {
+//   //   query = query.sort("-createdAt");
+//   // }
 
-  // 4) Field Limiting
+//   // 4) Field Limiting
 
-  // if (req.query.fields) {
-  //   const fields = req.query.fields.split(",").join(" ");
-  //   query = query.select(fields);
-  // } else {
-  //   query = query.select("-__v");
-  // }
+//   // if (req.query.fields) {
+//   //   const fields = req.query.fields.split(",").join(" ");
+//   //   query = query.select(fields);
+//   // } else {
+//   //   query = query.select("-__v");
+//   // }
 
-  // 5) Pagination
+//   // 5) Pagination
 
-  // const page = req.query.page * 1 || 1;
-  // const limit = req.query.limit * 1 || 100;
-  // const skip = (page - 1) * limit;
+//   // const page = req.query.page * 1 || 1;
+//   // const limit = req.query.limit * 1 || 100;
+//   // const skip = (page - 1) * limit;
 
-  // query = query.skip(skip).limit(limit);
+//   // query = query.skip(skip).limit(limit);
 
-  // if (req.query.page) {
-  //   const numTours = await Tour.countDocuments();
-  //   if (skip >= numTours) throw new Error("This page does not exist");
-  // }
+//   // if (req.query.page) {
+//   //   const numTours = await Tour.countDocuments();
+//   //   if (skip >= numTours) throw new Error("This page does not exist");
+//   // }
 
-  // EXECUTE QUERY
+//   // EXECUTE QUERY
 
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitation()
-    .paginate();
+//   const features = new APIFeatures(Tour.find(), req.query)
+//     .filter()
+//     .sort()
+//     .limitation()
+//     .paginate();
 
-  const tours = await features.query;
+//   const tours = await features.query;
 
-  res.status(200).json({
-    status: "success",
-    results: tours.length,
-    data: {
-      tours,
-    },
-  });
+//   res.status(200).json({
+//     status: "success",
+//     results: tours.length,
+//     data: {
+//       tours,
+//     },
+//   });
 
-  // const tours = await Tour.find();
-  // console.log(query);
-  // const tours = await Tour.find()
-  //   .where("duration")
-  //   .equals(5)
-  //   .where("difficulty")
-  //   .equals("easy");
-});
+//   // const tours = await Tour.find();
+//   // console.log(query);
+//   // const tours = await Tour.find()
+//   //   .where("duration")
+//   //   .equals(5)
+//   //   .where("difficulty")
+//   //   .equals("easy");
+// });
+
+exports.getAllTours = factory.getAllOne(Tour);
 
 exports.addTour = factory.createOne(Tour);
 
-exports.getTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id).populate("reviews");
-  // Tour.findOne({_id: req.params.id})
-
-  if (!tour) {
-    return next(new AppError(`No tour found with that ID`, 404));
-  }
-
-  res.status(201).json({
-    status: "success",
-    data: {
-      tour,
-    },
-  });
-});
-
+exports.getTour = factory.getOne(Tour, { path: "reviews" });
 exports.updateTour = factory.updateOne(Tour);
 
 // const deleteTour = catchAsync(async (req, res, next) => {
