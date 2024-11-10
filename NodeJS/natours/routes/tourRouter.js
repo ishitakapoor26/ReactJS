@@ -14,20 +14,34 @@ router.param("id", (req, res, next, val) => {
 
 router
   .route("/top-5-tours")
-  .get(authController.protect, tourController.getAllTours);
+  .get(tourController.aliasTopTours, tourController.getAllTours);
 
-router.route("/monthly-plan/:year").get(tourController.getMonthlyPlan);
+router
+  .route("/monthly-plan/:year")
+  .get(
+    authController.protect,
+    authController.restrictTo("admin", "lead-guide", "guide"),
+    tourController.getMonthlyPlan
+  );
 
 router.route("/tour-stats").get(tourController.getTourStats);
 
 router
   .route("/")
-  .get(authController.protect, tourController.getAllTours)
-  .post(tourController.addTour);
+  .get(tourController.getAllTours)
+  .post(
+    authController.protect,
+    authController.restrictTo("admin", "lead-guide"),
+    tourController.addTour
+  );
 
 router
   .route("/:id")
-  .patch(tourController.updateTour)
+  .patch(
+    authController.protect,
+    authController.restrictTo("admin", "lead-guide"),
+    tourController.updateTour
+  )
   .get(tourController.getTour)
   .delete(
     authController.protect,
