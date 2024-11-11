@@ -118,6 +118,8 @@ const tourSchema = mongoose.Schema(
   }
 );
 
+// tourSchema.index({ price: 1 });
+
 // Virtual properties that are not persistent, i.e. not stored in database, its basically for conversion from one unit to other
 
 tourSchema.virtual("durationWeeks").get(function () {
