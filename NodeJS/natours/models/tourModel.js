@@ -121,6 +121,9 @@ const tourSchema = mongoose.Schema(
 
 // tourSchema.index({ price: 1 });
 
+tourSchema.index({ startLocation: "2dsphere" });
+tourSchema.index({ slug: 1 });
+
 // Virtual properties that are not persistent, i.e. not stored in database, its basically for conversion from one unit to other
 
 tourSchema.virtual("durationWeeks").get(function () {
@@ -181,11 +184,11 @@ tourSchema.post(/^find/, function (docs, next) {
 
 // AGGREGATION MIDDLEWARE
 
-tourSchema.pre("aggregate", function (next) {
-  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-  console.log(this);
-  next();
-});
+// tourSchema.pre("aggregate", function (next) {
+//   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+//   console.log(this);
+//   next();
+// });
 
 const Tour = mongoose.model("Tour", tourSchema);
 
