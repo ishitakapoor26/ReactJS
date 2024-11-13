@@ -7,6 +7,7 @@ exports.getOverview = catchAsync(async (req, res, next) => {
   // 2) Build template
   // 3) Render the template using tour data from 1)
   res.status(200).render("overview", {
+    title: "Exciting tours for adventurous people",
     tours,
   });
 });
@@ -25,5 +26,17 @@ exports.getTours = catchAsync(async (req, res, next) => {
     .render("tour", {
       title: `${tour.name} Tour`,
       tour,
+    });
+});
+
+exports.getLoginForm = catchAsync(async (req, res, next) => {
+  res
+    .status(200)
+    .set(
+      "Content-Security-Policy",
+      "default-src 'self'; font-src 'self' https://fonts.gstatic.com data:; base-uri 'self'; block-all-mixed-content; form-action 'self'; frame-ancestors 'self'; object-src 'none'; script-src 'self' https://cdnjs.cloudflare.com https://api.mapbox.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; upgrade-insecure-requests;"
+    )
+    .render("login", {
+      title: "Log into your account",
     });
 });

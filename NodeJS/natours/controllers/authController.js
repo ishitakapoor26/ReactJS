@@ -79,8 +79,10 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
-  // console.log(token);
+  console.log(token);
 
   if (!token) {
     return next(
@@ -117,6 +119,39 @@ exports.protect = catchAsync(async (req, res, next) => {
   // GRANT ACCESS TO THE PROTECTED ROUTE
 
   req.user = freshUser;
+  next();
+});
+
+// Only for rendered pages, no errors!
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+
+    const decoded = await promisify(jwt.verify)(
+      req.cookies.jwt,
+      process.env.JWT_SECRET
+    );
+
+    console.log(decoded);
+
+    // check if user exists
+
+    const freshUser = await User.findById(decoded.id);
+    if (!freshUser) {
+      return next();
+    }
+
+    // check if user changed password after JWT was issued
+
+    if (freshUser.changedPasswordAfter(decoded.iat)) {
+      return next();
+    }
+
+    // There is a logged in user
+    // Passing user data to pug template
+    res.locals.user = freshUser;
+    return next();
+  }
   next();
 });
 

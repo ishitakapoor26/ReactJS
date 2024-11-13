@@ -9,6 +9,7 @@ const userRouter = require("./routes/userRouter");
 const reviewRouter = require("./routes/reviewRouter");
 const viewRouter = require("./routes/viewRoutes");
 const rateLimit = require("express-rate-limit");
+const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
@@ -30,6 +31,7 @@ app.use(morgan("dev"));
 
 // Middleware to parse JSON bodies
 app.use(express.json({ limit: "10kb" }));
+app.use(cookieParser());
 
 // Data sanitization against nosql query injection
 
