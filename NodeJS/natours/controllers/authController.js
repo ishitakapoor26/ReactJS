@@ -123,37 +123,41 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 // Only for rendered pages, no errors!
-exports.isLoggedIn = catchAsync(async (req, res, next) => {
-  if (req.cookies.jwt) {
-    token = req.cookies.jwt;
+exports.isLoggedIn = async (req, res, next) => {
+  try {
+    if (req.cookies.jwt) {
+      token = req.cookies.jwt;
 
-    const decoded = await promisify(jwt.verify)(
-      req.cookies.jwt,
-      process.env.JWT_SECRET
-    );
+      const decoded = await promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET
+      );
 
-    console.log(decoded);
+      console.log(decoded);
 
-    // check if user exists
+      // check if user exists
 
-    const freshUser = await User.findById(decoded.id);
-    if (!freshUser) {
+      const freshUser = await User.findById(decoded.id);
+      if (!freshUser) {
+        return next();
+      }
+
+      // check if user changed password after JWT was issued
+
+      if (freshUser.changedPasswordAfter(decoded.iat)) {
+        return next();
+      }
+
+      // There is a logged in user
+      // Passing user data to pug template
+      res.locals.user = freshUser;
       return next();
     }
-
-    // check if user changed password after JWT was issued
-
-    if (freshUser.changedPasswordAfter(decoded.iat)) {
-      return next();
-    }
-
-    // There is a logged in user
-    // Passing user data to pug template
-    res.locals.user = freshUser;
+  } catch (err) {
     return next();
   }
   next();
-});
+};
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
@@ -257,3 +261,13 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // 4) Log user in, send JWT
   createSendToken(user, 200, res);
 });
+
+exports.logout = (req, res, next) => {
+  res.cookie("jwt", "loggedout", {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({
+    status: "success",
+  });
+};
