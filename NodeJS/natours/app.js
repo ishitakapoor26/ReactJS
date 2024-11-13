@@ -23,8 +23,17 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Global Middleware to log HTTP requests (dev format)
 
-// Set security HTTP
-app.use(helmet());
+// // Set security HTTP
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'"],
+//         connectSrc: ["'self'", "ws://localhost:53220"],
+//       },
+//     },
+//   })
+// );
 
 // Development logging
 app.use(morgan("dev"));
