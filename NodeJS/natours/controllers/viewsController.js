@@ -44,3 +44,9 @@ exports.getLoginForm = catchAsync(async (req, res, next) => {
 //   "Content-Security-Policy",
 //   "default-src *; connect-src *; font-src 'self' https://fonts.gstatic.com data:; base-uri 'self'; block-all-mixed-content; form-action 'self'; frame-ancestors 'self'; object-src 'none'; script-src 'self' https://cdnjs.cloudflare.com https://api.mapbox.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; upgrade-insecure-requests;"
 // )
+
+exports.getAccount = (req, res) => {
+  res.status(200).render("account", {
+    title: "Your account",
+  });
+};
