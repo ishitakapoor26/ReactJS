@@ -14,23 +14,26 @@ router.route("/forgot").post(authController.forgotPassword);
 
 router.route("/reset/:token").patch(authController.resetPassword);
 
-// Middleware runs in sequence: Post this user will be authenticated
 router.use(authController.protect);
-router.use(authController.restrictTo("admin"));
 
-router.route("/").get(userController.getAllUsers);
+router.route("/account/me").get(userController.getMe, userController.getUser);
+
+router.route("/updateMe").patch(userController.updateUserData);
+
+router.route("/deleteMe").delete(userController.deleteUser);
 
 router.route("/updatePassword").patch(authController.updatePassword);
 
-router.route("/updateMe").patch(userController.updateUserData);
-router.route("/deleteMe").delete(userController.deleteUser);
+// Middleware runs in sequence: Post this user will be authenticated
+
+router.use(authController.restrictTo("admin"));
+
+router.route("/").get(userController.getAllUsers);
 
 router
   .route("/:id")
   .delete(userController.deleteUser)
   .patch(userController.updateUser)
   .get(userController.getUser);
-
-router.route("/me").get(userController.getMe, userController.getUser);
 
 module.exports = router;

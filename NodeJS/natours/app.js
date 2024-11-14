@@ -40,6 +40,7 @@ app.use(morgan("dev"));
 
 // Middleware to parse JSON bodies
 app.use(express.json({ limit: "10kb" }));
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(cookieParser());
 
 // Data sanitization against nosql query injection
