@@ -31,9 +31,12 @@ if (logoutBtn) {
 if (updateDataForm) {
   updateDataForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const email = document.getElementById("email").value;
-    const name = document.getElementById("name").value;
-    await updateSettings({ name, email }, "Account Details");
+    const form = new FormData();
+    form.append("name", document.getElementById("name").value);
+    form.append("email", document.getElementById("email").value);
+    form.append("photo", document.getElementById("photo").files[0]);
+    console.log(form);
+    await updateSettings(form, "Account Details");
   });
 }
 
