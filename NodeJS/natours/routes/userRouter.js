@@ -18,7 +18,13 @@ router.use(authController.protect);
 
 router.route("/account/me").get(userController.getMe, userController.getUser);
 
-router.route("/updateMe").patch(userController.updateUserData);
+router
+  .route("/updateMe")
+  .patch(
+    userController.uploadUserPhoto,
+    userController.resizeUserPhoto,
+    userController.updateUserData
+  );
 
 router.route("/deleteMe").delete(userController.deleteUser);
 
