@@ -7,6 +7,7 @@ const app = express();
 const tourRouter = require("./routes/tourRouter");
 const userRouter = require("./routes/userRouter");
 const reviewRouter = require("./routes/reviewRouter");
+const bookingRouter = require("./routes/bookingRouter");
 const viewRouter = require("./routes/viewRoutes");
 const rateLimit = require("express-rate-limit");
 const cookieParser = require("cookie-parser");
@@ -79,6 +80,7 @@ app.use("/", viewRouter);
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/reviews", reviewRouter);
+app.use("/api/v1/booking", bookingRouter);
 
 app.all("*", (req, res, next) => {
   // res.status(404).json({
