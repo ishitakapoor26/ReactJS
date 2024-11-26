@@ -1,4 +1,4 @@
-import { login, logout } from "./login";
+import { login, logout, signup } from "./login";
 import { displayMap } from "./mapbox";
 import { updateSettings } from "./updateSettings";
 import { bookTour } from "./stripe";
@@ -6,6 +6,7 @@ import { bookTour } from "./stripe";
 // DOM elements
 const mapBox = document.getElementById("map");
 const loginForm = document.querySelector(".form--login");
+const signupForm = document.querySelector(".form--signup");
 const updateDataForm = document.querySelector(".form-user-data");
 const updatePasswordForm = document.querySelector(".form-user-password");
 const logoutBtn = document.querySelector(".nav__el--logout");
@@ -23,6 +24,22 @@ if (loginForm) {
     const password = document.getElementById("password").value;
     console.log(email, password);
     login(email, password);
+  });
+}
+
+if (signupForm) {
+  signupForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const passwordConfirm = document.getElementById("confirm-password").value;
+    // console.log(email, password, password, passwordConfirm);
+    document.getElementById("name").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("confirm-password").value = "";
+    signup(name, email, password, passwordConfirm);
   });
 }
 
