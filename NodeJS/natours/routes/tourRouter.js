@@ -2,6 +2,7 @@ const express = require("express");
 const tourController = require("./../controllers/tourController");
 const authController = require("./../controllers/authController");
 const reviewRouter = require("./reviewRouter");
+const bookingRouter = require("./bookingRouter");
 
 const router = express.Router();
 
@@ -66,5 +67,6 @@ router
 //   );
 
 router.use("/:tourId/reviews", reviewRouter);
+router.use("/:tourId/bookings", bookingRouter);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const express = require("express");
 const authController = require("./../controllers/authController");
 const userController = require("./../controllers/userController");
+const bookingRouter = require("./bookingRouter");
 
 const router = express.Router();
 
@@ -29,6 +30,8 @@ router
 router.route("/deleteMe").delete(userController.deleteUser);
 
 router.route("/updatePassword").patch(authController.updatePassword);
+
+router.use("/:userId/bookings", bookingRouter);
 
 // Middleware runs in sequence: Post this user will be authenticated
 
