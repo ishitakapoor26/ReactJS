@@ -142,7 +142,7 @@ exports.getAllTours = factory.getAllOne(Tour);
 
 exports.addTour = factory.createOne(Tour);
 
-exports.getTour = factory.getOne(Tour, { path: "reviews" });
+exports.getTour = factory.getOne(Tour, { path: "reviews bookings" });
 exports.updateTour = factory.updateOne(Tour);
 
 // const deleteTour = catchAsync(async (req, res, next) => {

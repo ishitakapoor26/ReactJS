@@ -42,7 +42,7 @@ block content
           +overviewBox('Difficulty',tour.difficulty,'trending-up')
           +overviewBox('Participants',`${tour.maxGroupSize} people`,'user')
           +overviewBox('Rating',`${tour.ratingsAverage} / 5`,'star')
-          
+
         .overview-box__group
           h2.heading-secondary.ma-bt-lg Your tour guides
 
@@ -82,15 +82,31 @@ block content
 
 
   section.section-cta
-    .cta
-      .cta__img.cta__img--logo
-        img(src='/img/logo-white.png', alt='Natours logo')
-      img.cta__img.cta__img--1(src=`/img/tours/${tour.images[1]}`, alt='')
-      img.cta__img.cta__img--2(src=`/img/tours/${tour.images[2]}`, alt='')
-      .cta__content
-        h2.heading-secondary What are you waiting for?
-        p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
-        if user
-          button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book tour now!
-        else    
-          a.btn.btn--green.span-all-rows(href='/login') Log In to Book Tour
+    if tour.bookings.length!=0 && user 
+      each booking in tour.bookings 
+        if user.id === booking.user.id
+          .login-form(style="max-width:90rem;")
+            h2.heading-secondary.ma-bt-lg How was your tour? Review Us!
+            form.form.form--review
+              .form__group
+                label.form__label(for='review') Review
+                textarea#review.form__input(name="review", cols="30", rows="10", required, placeholder='Write your Tour review here.', minlength='5')
+              .form__group.ma-bt-md
+                label.form__label(for='rating') Ratings
+                input#rating.form__input(type='Number', placeholder='e.g. 5', required,)
+              .form__group
+                button.btn.btn--green.btn--submit-review(data-tour-id=`${tour.id}`) Submit Review
+
+    else 
+      .cta
+        .cta__img.cta__img--logo
+          img(src='/img/logo-white.png', alt='Natours logo')
+        img.cta__img.cta__img--1(src=`/img/tours/${tour.images[1]}`, alt='')
+        img.cta__img.cta__img--2(src=`/img/tours/${tour.images[2]}`, alt='')
+        .cta__content
+          h2.heading-secondary What are you waiting for?
+          p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
+          if user
+            button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book tour now!
+          else    
+            a.btn.btn--green.span-all-rows(href='/login') Log In to Book Tour
